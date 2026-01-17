@@ -22,14 +22,14 @@ Track membership growth and earnings over time!
 
 ## Files
 
-- **stats.png** - Current stats card (updates every 6 hours)
+- **stats.png** - Current stats card
 - **stats_graph.png** - Historical trend graph
 - **stats.txt** - Plain text version of current stats
 - **stats_history.csv** - Complete historical data log
 
 ---
 
-**Last Updated:** Auto-updates every 6 hours (10 AM, 4 PM, 10 PM, 4 AM PST)
+**Last Updated:** Auto-updates every 6 hours
 
 Used on [r/Wreckreation](https://reddit.com/r/Wreckreation)
 
