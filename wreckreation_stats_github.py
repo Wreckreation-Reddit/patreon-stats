@@ -68,11 +68,11 @@ except:
     pass
 
 try:
-print("   → Looking for truncated-summary-text element...")
-span = WebDriverWait(driver, 20).until(
-    EC.presence_of_element_located((By.ID, "truncated-summary-text"))
-)
-print("   ✓ Found element!")
+    print("   → Looking for truncated-summary-text element...")
+    span = WebDriverWait(driver, 20).until(
+        EC.presence_of_element_located((By.ID, "truncated-summary-text"))
+    )
+    print("   ✓ Found element!")
     driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", span)
     time.sleep(1)
     driver.execute_script("arguments[0].click();", span)
