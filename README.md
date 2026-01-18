@@ -4,7 +4,7 @@ Auto-updated stats for [Three Fields Entertainment's Patreon](https://www.patreo
 
 ## Current Stats
 
-![Stats](stats.png)
+![Stats](stats.png?raw=true)
 
 **[View Text Version](stats.txt)**
 
@@ -12,7 +12,7 @@ Auto-updated stats for [Three Fields Entertainment's Patreon](https://www.patreo
 
 ## Historical Trends
 
-![Growth Graph](stats_graph.png)
+![Growth Graph](stats_graph.png?raw=true)
 
 Track membership growth and earnings over time!
 
