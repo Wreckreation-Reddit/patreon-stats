@@ -42,6 +42,20 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
       run: |
         python wreckreation_stats_github.py
+
+    - name: Debug - List generated files
+      run: |
+        echo "Current directory:"
+        pwd
+        echo "Files in directory:"
+        ls -la
+        echo "Checking if files exist:"
+        test -f stats.png && echo "✓ stats.png exists" || echo "✗ stats.png missing"
+        test -f stats_graph.png && echo "✓ stats_graph.png exists" || echo "✗ stats_graph.png missing"
+        test -f stats_history.csv && echo "✓ stats_history.csv exists" || echo "✗ stats_history.csv missing"
+        test -f stats.txt && echo "✓ stats.txt exists" || echo "✗ stats.txt missing"
+        echo "Git status:"
+        git status
     
     - name: Commit and push if changed
       run: |
