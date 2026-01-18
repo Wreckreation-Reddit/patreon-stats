@@ -57,7 +57,7 @@ driver = webdriver.Chrome(service=service, options=options)
 driver.get(PATREON_URL)
 
 print("\n[1/5] Scraping Patreon...")
-time.sleep(5)
+time.sleep(8)
 
 try:
     close_buttons = driver.find_elements(By.XPATH, "//button[@aria-label='Close Dialog']")
@@ -68,15 +68,17 @@ except:
     pass
 
 try:
-    span = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "truncated-summary-text"))
-    )
+print("   → Looking for truncated-summary-text element...")
+span = WebDriverWait(driver, 20).until(
+    EC.presence_of_element_located((By.ID, "truncated-summary-text"))
+)
+print("   ✓ Found element!")
     driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", span)
     time.sleep(1)
     driver.execute_script("arguments[0].click();", span)
     time.sleep(3)
     
-    WebDriverWait(driver, 15).until(
+    WebDriverWait(driver, 20).until(
         EC.presence_of_element_located((By.XPATH, "//*[contains(text(),'paid members')]"))
     )
     
@@ -111,6 +113,17 @@ try:
 
 except Exception as e:
     print(f"   ✗ Error scraping: {e}")
+    print(f"   Error type: {type(e).__name__}")
+    
+    # Save screenshot and page source for debugging
+    try:
+        driver.save_screenshot("error_screenshot.png")
+        with open("page_source.html", "w", encoding="utf-8") as f:
+            f.write(driver.page_source)
+        print("   ✓ Saved error_screenshot.png and page_source.html for debugging")
+    except:
+        pass
+    
     driver.quit()
     exit()
 
