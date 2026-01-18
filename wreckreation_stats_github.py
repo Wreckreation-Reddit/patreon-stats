@@ -1,5 +1,4 @@
-# Wreckreation Patreon Stats - GitHub Actions Version
-# Modified to run on GitHub's servers
+# Wreckreation Patreon Stats
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -24,7 +23,6 @@ import matplotlib.dates as mdates
 # ═══════════════════════════════════════════════════════════
 PATREON_URL = "https://www.patreon.com/cw/u10680381"
 
-# GitHub Settings (use environment variable for token)
 GITHUB_USERNAME = "Wreckreation-Reddit"
 GITHUB_REPO = "patreon-stats"
 GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')  # Pulled from secrets
@@ -32,7 +30,6 @@ GITHUB_FILE_PATH = "stats.png"
 GITHUB_GRAPH_PATH = "stats_graph.png"
 GITHUB_CSV_PATH = "stats_history.csv"
 
-# File paths (local to GitHub Actions runner)
 IMAGE_SAVE_PATH = "stats.png"
 GRAPH_SAVE_PATH = "stats_graph.png"
 CSV_SAVE_PATH = "stats_history.csv"
@@ -44,7 +41,6 @@ print("="*60)
 print("WRECKREATION PATREON STATS UPDATER (GitHub Actions)")
 print("="*60)
 
-# Chrome options for GitHub Actions (headless Linux)
 options = webdriver.ChromeOptions()
 options.add_argument('--headless')
 options.add_argument('--no-sandbox')
@@ -52,15 +48,17 @@ options.add_argument('--disable-dev-shm-usage')
 options.add_argument('--disable-gpu')
 options.add_argument('--window-size=1920,1080')
 
-# Use system ChromeDriver on GitHub Actions
-driver = webdriver.Chrome(options=options)
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+
+service = Service(ChromeDriverManager().install())
+driver = webdriver.Chrome(service=service, options=options)
 
 driver.get(PATREON_URL)
 
 print("\n[1/5] Scraping Patreon...")
 time.sleep(5)
 
-# Close any unwanted modals
 try:
     close_buttons = driver.find_elements(By.XPATH, "//button[@aria-label='Close Dialog']")
     if close_buttons:
@@ -70,7 +68,6 @@ except:
     pass
 
 try:
-    # Click summary text to open About modal
     span = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.ID, "truncated-summary-text"))
     )
@@ -79,12 +76,10 @@ try:
     driver.execute_script("arguments[0].click();", span)
     time.sleep(3)
     
-    # Wait for modal
     WebDriverWait(driver, 15).until(
         EC.presence_of_element_located((By.XPATH, "//*[contains(text(),'paid members')]"))
     )
     
-    # Extract stats
     full_text = driver.page_source
     stats_divs = driver.find_elements(By.CLASS_NAME, "cm-rhTxPu")
     stats_text = None
@@ -104,7 +99,6 @@ try:
     paid = paid_match.group(1) if paid_match else "???"
     earnings = earnings_match.group(1) if earnings_match else "???"
     
-    # Convert to integers
     members_int = int(members.replace(',', '')) if members != "???" else 0
     paid_int = int(paid.replace(',', '')) if paid != "???" else 0
     earnings_int = int(earnings.replace(',', '')) if earnings != "???" else 0
@@ -129,7 +123,6 @@ now = datetime.now()
 timestamp = now.strftime("%m/%d/%Y %I:%M%p PST")
 timestamp_full = now.strftime("%Y-%m-%d %H:%M")
 
-# Check if CSV exists
 csv_exists = os.path.exists(CSV_SAVE_PATH)
 
 with open(CSV_SAVE_PATH, 'a', newline='') as csvfile:
@@ -161,7 +154,6 @@ try:
             paid_history.append(int(row['paid']))
             earnings_history.append(int(row['earnings']))
     
-    # Only generate graph if we have multiple data points
     if len(timestamps) > 1:
         plt.style.use('dark_background')
         fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
@@ -212,7 +204,6 @@ ACCENT_COLOR = "#00d4ff"
 img = Image.new('RGB', (WIDTH, HEIGHT), BG_COLOR)
 draw = ImageDraw.Draw(img)
 
-# Use default font (Arial not available on Linux)
 font_size_title = 24
 font_size_stat = 20
 font_size_label = 14
@@ -220,7 +211,6 @@ font_size_update = 12
 
 try:
     from PIL import ImageFont
-    # Try to load a font (DejaVu is available on Ubuntu)
     title_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size_title)
     stat_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", font_size_stat)
     label_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", font_size_label)
@@ -231,12 +221,10 @@ except:
     label_font = ImageFont.load_default()
     update_font = ImageFont.load_default()
 
-# Draw header
 draw.rectangle([(0, 0), (WIDTH, 50)], fill=ACCENT_COLOR)
 draw.text((WIDTH/2, 25), "Three Fields Entertainment", 
           fill=BG_COLOR, font=title_font, anchor="mm")
 
-# Draw stats (without icons for GitHub Actions - icons not in repo)
 y_pos = 80
 draw.text((30, y_pos), "Members:", fill=TEXT_COLOR, font=label_font)
 draw.text((WIDTH - 30, y_pos), members, fill=ACCENT_COLOR, font=stat_font, anchor="rm")
