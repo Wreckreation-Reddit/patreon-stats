@@ -225,17 +225,47 @@ draw.rectangle([(0, 0), (WIDTH, 50)], fill=ACCENT_COLOR)
 draw.text((WIDTH/2, 25), "Three Fields Entertainment", 
           fill=BG_COLOR, font=title_font, anchor="mm")
 
-y_pos = 80
-draw.text((30, y_pos), "Members:", fill=TEXT_COLOR, font=label_font)
-draw.text((WIDTH - 30, y_pos), members, fill=ACCENT_COLOR, font=stat_font, anchor="rm")
+try:
+    icon_size = (24, 24)
+    total_icon = Image.open("icons/total.png").resize(icon_size)
+    paid_icon = Image.open("icons/paid.png").resize(icon_size)
+    month_icon = Image.open("icons/month.png").resize(icon_size)
+    
+    y_pos = 80
+    
+    # Total Members
+    img.paste(total_icon, (30, y_pos - 2), total_icon if total_icon.mode == 'RGBA' else None)
+    draw.text((65, y_pos), "Members:", fill=TEXT_COLOR, font=label_font)
+    draw.text((WIDTH - 30, y_pos), members, fill=ACCENT_COLOR, font=stat_font, anchor="rm")
+    
+    y_pos += 50
+    
+    # Paid Members
+    img.paste(paid_icon, (30, y_pos - 2), paid_icon if paid_icon.mode == 'RGBA' else None)
+    draw.text((65, y_pos), "Paid Members:", fill=TEXT_COLOR, font=label_font)
+    draw.text((WIDTH - 30, y_pos), paid, fill=ACCENT_COLOR, font=stat_font, anchor="rm")
+    
+    y_pos += 50
+    
+    # Monthly Earnings
+    img.paste(month_icon, (30, y_pos - 2), month_icon if month_icon.mode == 'RGBA' else None)
+    draw.text((65, y_pos), "Monthly Earnings:", fill=TEXT_COLOR, font=label_font)
+    draw.text((WIDTH - 30, y_pos), f"${earnings}", fill=ACCENT_COLOR, font=stat_font, anchor="rm")
 
-y_pos += 50
-draw.text((30, y_pos), "Paid Members:", fill=TEXT_COLOR, font=label_font)
-draw.text((WIDTH - 30, y_pos), paid, fill=ACCENT_COLOR, font=stat_font, anchor="rm")
-
-y_pos += 50
-draw.text((30, y_pos), "Monthly Earnings:", fill=TEXT_COLOR, font=label_font)
-draw.text((WIDTH - 30, y_pos), f"${earnings}", fill=ACCENT_COLOR, font=stat_font, anchor="rm")
+except Exception as e:
+    # Fallback if icons don't load
+    print(f"   ⚠ Couldn't load icons: {e}")
+    y_pos = 80
+    draw.text((30, y_pos), "Members:", fill=TEXT_COLOR, font=label_font)
+    draw.text((WIDTH - 30, y_pos), members, fill=ACCENT_COLOR, font=stat_font, anchor="rm")
+    
+    y_pos += 50
+    draw.text((30, y_pos), "Paid Members:", fill=TEXT_COLOR, font=label_font)
+    draw.text((WIDTH - 30, y_pos), paid, fill=ACCENT_COLOR, font=stat_font, anchor="rm")
+    
+    y_pos += 50
+    draw.text((30, y_pos), "Monthly Earnings:", fill=TEXT_COLOR, font=label_font)
+    draw.text((WIDTH - 30, y_pos), f"${earnings}", fill=ACCENT_COLOR, font=stat_font, anchor="rm")
 
 # Footer
 draw.rectangle([(0, HEIGHT-30), (WIDTH, HEIGHT)], fill="#0a0a0a")
