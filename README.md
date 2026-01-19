@@ -29,15 +29,17 @@ Track membership growth and earnings over time!
 
 ---
 
-**Last Updated:** Auto-updates every 6 hours
-
-Used on [r/Wreckreation](https://reddit.com/r/Wreckreation)
-
 ## Disclaimer
 
 The Three Fields Entertainment logo and name are property of Three Fields Entertainment Ltd. This is an unofficial fan-made stats tracker and is not affiliated with or endorsed by Three Fields Entertainment or Patreon.
 
 All trademarks and copyrights belong to their respective owners.
+
+---
+
+**Last Updated:** Auto-updates every 6 hours
+
+Used on [r/Wreckreation](https://reddit.com/r/Wreckreation)
 
 ---
 
