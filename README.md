@@ -37,7 +37,7 @@ All trademarks and copyrights belong to their respective owners.
 
 ---
 
-**Last Updated:** Auto-updates every 6 hours
+**Last Updated:** Auto-updates happen at 9am, 3pm, 9pm PST every day.
 
 Used on [r/Wreckreation](https://reddit.com/r/Wreckreation)
 
